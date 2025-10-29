@@ -1,8 +1,6 @@
-# Doom-Style Raycaster Engine
+# Aetherion
 
 A classic first-person raycasting game engine built from scratch in C++, inspired by the legendary rendering techniques of early 3D games like Wolfenstein 3D and Doom.
-
-<!-- Add gameplay demo video or GIF here -->
 
 
 ## Table of Contents
@@ -53,23 +51,12 @@ This project implements a raycasting engine that creates a pseudo-3D environment
 
 ## Screenshots
 
-### Main Menu
-<!-- Add starting screen screenshot here -->
+
+![levelScreen](https://github.com/user-attachments/assets/1fe4b175-e7af-4cd7-8e23-fbf63a766c1b)
 
 
-### Gameplay
-<!-- Add gameplay screenshot 1 here -->
+![endingScreen](https://github.com/user-attachments/assets/6bbee398-e453-4cd1-a598-b40e42342bda)
 
-
-<!-- Add gameplay screenshot 2 here -->
-
-
-### Level Design
-<!-- Add level map screenshot here -->
-
-
-### Ending Screen
-<!-- Add ending screen screenshot here -->
 
 
 
