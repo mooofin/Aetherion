@@ -109,8 +109,8 @@ Download the development libraries from:
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/mooofin/HEKATE.git
-cd HEKATE
+git clone https://github.com/mooofin/Aetherion.git
+cd Aetherion
 ```
 
 
