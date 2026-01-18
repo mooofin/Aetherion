@@ -7,7 +7,6 @@ A classic first-person raycasting game engine built from scratch in C++, inspire
 
 - [Overview](#overview)
 - [Features](#features)
-- [Screenshots](#screenshots)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -48,14 +47,6 @@ This project implements a raycasting engine that creates a pseudo-3D environment
 - Cross-platform compatibility
 - Efficient texture loading and caching
 
-
-## Screenshots
-
-
-![levelScreen](https://github.com/user-attachments/assets/1fe4b175-e7af-4cd7-8e23-fbf63a766c1b)
-
-
-![endingScreen](https://github.com/user-attachments/assets/6bbee398-e453-4cd1-a598-b40e42342bda)
 
 
 
