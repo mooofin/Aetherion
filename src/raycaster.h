@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include <SDL2/SDL_render.h>
@@ -52,6 +53,7 @@ public:
   }
 
   void load_map(const std::string& filename) {
+    map.clear();
     std::ifstream file(filename);
     std::string line;
     while (getline(file, line)) {
@@ -81,7 +83,7 @@ public:
   Impact cast_ray(float a, bool viewMap) {
     float d = 0;
     std::string mapHit;
-    int tx;
+    int tx = 0;
 
     while(true) {
       int x = static_cast<int>(player.x + d * cos(a)); 
@@ -90,6 +92,10 @@ public:
       int i = static_cast<int>(x / BLOCK);
       int j = static_cast<int>(y / BLOCK);
 
+      if (j < 0 || j >= static_cast<int>(map.size()) ||
+          i < 0 || i >= static_cast<int>(map[j].size())) {
+        return Impact{d, "+", 0};
+      }
 
       if (map[j][i] != ' ') {
         mapHit = map[j][i];
@@ -114,7 +120,7 @@ public:
           maxhit = hitx;
         }
 
-        tx = maxhit * tsize / BLOCK;
+        tx = std::clamp(maxhit * tsize / BLOCK, 0, tsize - 1);
 
         break;
       }
@@ -145,7 +151,12 @@ public:
         for (int y = 0; y < SCREEN_HEIGHT; y += BLOCK) {
           int i = static_cast<int>(x / BLOCK );
           int j = static_cast<int>(y / BLOCK );
-          
+
+          if (j < 0 || j >= static_cast<int>(map.size()) ||
+              i < 0 || i >= static_cast<int>(map[j].size())) {
+            continue;
+          }
+
           if (map[j][i] != ' ') {
             std::string mapHit;
             mapHit = map[j][i];

@@ -3,6 +3,7 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_image.h>
+#include <atomic>
 #include <thread>
 #include <string>
 
@@ -18,6 +19,7 @@ Uint32 initialFrames;
 Uint32 capTimer = 0;
 const int SCREEN_FPS = 144;  
 const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
+std::atomic<bool> keepMusicPlaying = true;
 
 int PlayMusic() {
     SDL_AudioSpec wavSpec;
@@ -28,23 +30,23 @@ int PlayMusic() {
         return 1;
     }
 
-    if (SDL_OpenAudio(&wavSpec, nullptr) < 0) {
+    SDL_AudioDeviceID deviceId = SDL_OpenAudioDevice(nullptr, 0, &wavSpec, nullptr, 0);
+    if (deviceId == 0) {
+        SDL_FreeWAV(wavBuffer);
         return 1;
     }
 
-    while (true) {
-        SDL_QueueAudio(1, wavBuffer, wavLength);
-        SDL_PauseAudio(0);
-
-        SDL_Delay(wavLength * 1000 / wavSpec.freq);
-
-        SDL_QueueAudio(1, wavBuffer, wavLength);
-        SDL_PauseAudio(0);
+    SDL_PauseAudioDevice(deviceId, 0);
+    while (keepMusicPlaying.load()) {
+        if (SDL_GetQueuedAudioSize(deviceId) < wavLength) {
+            SDL_QueueAudio(deviceId, wavBuffer, wavLength);
+        }
+        SDL_Delay(100);
     }
 
-    SDL_CloseAudio();
+    SDL_ClearQueuedAudio(deviceId);
+    SDL_CloseAudioDevice(deviceId);
     SDL_FreeWAV(wavBuffer);
-    SDL_Quit();
 
     return 0;
 }
@@ -307,6 +309,7 @@ int main(int argv, char** args) {
     }
   }
 
+  keepMusicPlaying = false;
   music.join();
 
   SDL_DestroyWindow(window);

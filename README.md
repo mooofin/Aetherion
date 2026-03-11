@@ -72,7 +72,11 @@ sudo apt-get install build-essential cmake libsdl2-dev libsdl2-image-dev
 sudo dnf install gcc-c++ cmake SDL2-devel SDL2_image-devel
 
 # Arch Linux
-sudo pacman -S base-devel cmake sdl2 sdl2_image
+sudo pacman -S --needed base-devel cmake pkgconf sdl2 sdl2_image
+
+# CachyOS
+# CachyOS uses the Arch package set, so the same packages apply.
+sudo pacman -S --needed base-devel cmake pkgconf sdl2 sdl2_image
 
 # NixOS
 # Use the provided shell.nix file for a reproducible development environment

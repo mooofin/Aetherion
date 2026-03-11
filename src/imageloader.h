@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <SDL2/SDL.h>
 #include <stdexcept>
 #include <map>
@@ -37,6 +38,8 @@ public:
         }
 
         SDL_Surface* targetSurface = it->second;
+        x = std::clamp(x, 0, targetSurface->w - 1);
+        y = std::clamp(y, 0, targetSurface->h - 1);
         int bpp = targetSurface->format->BytesPerPixel;
         Uint8 *p = (Uint8 *)targetSurface->pixels + y * targetSurface->pitch + x * bpp;
 
@@ -108,4 +111,3 @@ public:
 };
 
 std::map<std::string, SDL_Surface*> ImageLoader::imageSurfaces;
-

@@ -2,31 +2,32 @@ cmake_minimum_required(VERSION 3.22)
 
 project(doom VERSION 1.0)
 
-# Enable C++20 features
 set(CMAKE_CXX_STANDARD 20)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
-SET(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Find SDL2 using pkg-config (works well with NixOS)
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
+find_package(PkgConfig REQUIRED)
+find_package(SDL2 CONFIG QUIET)
+find_package(SDL2_image CONFIG QUIET)
 
-file(GLOB_RECURSE SOURCES CO NFIGURE_DEPENDS
-    "${PROJECT_SOURCE_DIR}/src/*.cpp"
-)
+if(NOT TARGET SDL2::SDL2)
+    pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET sdl2)
+    add_library(SDL2::SDL2 INTERFACE IMPORTED)
+    target_link_libraries(SDL2::SDL2 INTERFACE PkgConfig::SDL2)
+endif()
+
+if(NOT TARGET SDL2_image::SDL2_image)
+    pkg_check_modules(SDL2_IMAGE REQUIRED IMPORTED_TARGET SDL2_image)
+    add_library(SDL2_image::SDL2_image INTERFACE IMPORTED)
+    target_link_libraries(SDL2_image::SDL2_image INTERFACE PkgConfig::SDL2_IMAGE)
+endif()
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
-    ${SOURCES}
 )
 
 target_link_libraries(
     ${PROJECT_NAME} 
     PUBLIC SDL2::SDL2
     PUBLIC SDL2_image::SDL2_image
-)
-
-target_include_directories(${PROJECT_NAME} 
-    PUBLIC ${SDL2_INCLUDE_DIRS}
-    PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
 )
